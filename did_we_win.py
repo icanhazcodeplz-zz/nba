@@ -30,17 +30,17 @@ def did_we_win(parsed):
     for game in parsed:
         v_team = game['vTeam']
         h_team = game['hTeam']
-        v_team_score = v_team['score']
-        h_team_score = h_team['score']
+        v_team_score = int(v_team['score'])
+        h_team_score = int(h_team['score'])
         v_team_tri_code = v_team['triCode']
         h_team_tri_code = h_team['triCode']
         if v_team_tri_code == TEAM_TRI_CODE or h_team_tri_code == TEAM_TRI_CODE:
             if h_team_score != '':
                 h_team_wins = h_team_score > v_team_score
                 if h_team_wins:
-                    return '{} beat {}'.format(h_team_tri_code, v_team_tri_code)
+                    return '{} beat {} at {}'.format(h_team_tri_code, v_team_tri_code, h_team_tri_code)
                 else:
-                    return '{} lost to  {}'.format(h_team_tri_code, v_team_tri_code)
+                    return '{} beat {} at {}'.format(v_team_tri_code, h_team_tri_code, h_team_tri_code)
 
 def get_scoreboard():
     for days_back in range(DAYS_AGO, DAYS_AGO + 2):
