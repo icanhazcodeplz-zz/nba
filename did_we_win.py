@@ -26,7 +26,7 @@ HEADERS = {
     }
 
 
-def did_we_win(parsed):
+def did_we_win(parsed, date_str):
     for game in parsed:
         v_team = game['vTeam']
         h_team = game['hTeam']
@@ -37,6 +37,8 @@ def did_we_win(parsed):
         if v_team_tri_code == TEAM_TRI_CODE or h_team_tri_code == TEAM_TRI_CODE:
             if h_team_score != '':
                 h_team_wins = h_team_score > v_team_score
+                game_url = 'https://watch.nba.com/game/{}/{}{}'.format(date_str, v_team_tri_code, h_team_tri_code)
+                print(game_url)
                 if h_team_wins:
                     return '{} beat {} at {}'.format(h_team_tri_code, v_team_tri_code, h_team_tri_code)
                 else:
@@ -46,10 +48,10 @@ def get_scoreboard():
     for days_back in range(DAYS_AGO, DAYS_AGO + 2):
         date_str = (TODAY - timedelta(days=days_back)).strftime('%Y%m%d')
         url = URL_NO_DATE.format(date_str)
-        print('GET {}'.format(url))
+        print('Checking {}'.format(date_str))
         response = requests.get(url, headers=HEADERS, timeout=1)
         parsed = json.loads(response.text)['games']
-        result = did_we_win(parsed)
+        result = did_we_win(parsed, date_str)
         if result is not None:
             return result
 
